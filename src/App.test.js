@@ -1,8 +1,15 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
+
+jest.mock('./context/AuthContext', () => ({
+  AuthProvider: ({ children }) => <>{children}</>,
+  useAuth: () => ({ userRole: null }),
+}));
+
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders login page', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const headingElement = screen.getByText(/Zawadi Platform/i);
+  expect(headingElement).toBeInTheDocument();
 });
