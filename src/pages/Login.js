@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { auth, db } from "../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // 
 import { useAuth } from "../context/AuthContext";
+import "./Login.css";
 
+// Login page component that handles user authentication and redirects based on role
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +18,7 @@ export default function Login() {
   useEffect(() => {
     if (userRole === "mentor") navigate("/mentor-dashboard");
     if (userRole === "student") navigate("/student-dashboard");
-  }, [userRole, navigate]);
+  }, [userRole, navigate]); // runs whenever userRole or navigate changes
 
   async function handleLogin() {
     setError("");
@@ -24,7 +26,7 @@ export default function Login() {
       setError("Please enter both email and password.");
       return;
     }
-
+    // Set loading state to true while attempting login
     setLoading(true);
     try {
       const credential = await signInWithEmailAndPassword(auth, email, password);
@@ -43,50 +45,52 @@ export default function Login() {
     }
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    handleLogin();
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-lg border border-green-100">
-        <div className="mb-8 text-center">
-          <p className="text-sm uppercase tracking-[0.3em] text-green-600 font-semibold">Zawadi Platform</p>
-          <h1 className="mt-4 text-3xl font-bold text-slate-900">Welcome back</h1>
-          <p className="mt-2 text-sm text-slate-500">Log in to continue to your student or mentor dashboard.</p>
+    <div className="login-page">
+      <div className="login-card">
+        <div className="login-header">
+          <p className="login-brand">Zawadi Platform</p>
+          <h1 className="login-title">Welcome back</h1>
+          <p className="login-subtitle">Log in to continue to your student or mentor dashboard.</p>
         </div>
 
-        {error && <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700 mb-6">{error}</div>}
+        {error && <div className="login-error">{error}</div>}
 
-        <label className="block mb-4">
-          <span className="text-sm font-medium text-slate-700">Email</span>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-100"
-            type="email"
-            placeholder="you@example.com"
-          />
-        </label>
+        <form onSubmit={handleSubmit}>
+          <label className="login-field">
+            <span className="login-label">Email</span>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="login-input"
+              type="email"
+              placeholder="you@example.com"
+            />
+          </label>
 
-        <label className="block mb-6">
-          <span className="text-sm font-medium text-slate-700">Password</span>
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-100"
-            type="password"
-            placeholder="Enter your password"
-          />
-        </label>
+          <label className="login-field">
+            <span className="login-label">Password</span>
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="login-input"
+              type="password"
+              placeholder="Enter your password"
+            />
+          </label>
 
-        <button
-          type="button"
-          onClick={handleLogin}
-          disabled={loading}
-          className="w-full rounded-xl bg-green-700 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-green-300"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
+          <button type="submit" disabled={loading} className="login-submit">
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
 
-        <p className="mt-6 text-center text-sm text-slate-600">
-          Don’t have an account? <Link to="/register" className="font-semibold text-green-700 hover:underline">Create one</Link>
+        <p className="login-footer">
+          Don’t have an account? <Link to="/register">Create one</Link>
         </p>
       </div>
     </div>

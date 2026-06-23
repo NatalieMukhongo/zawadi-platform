@@ -3,6 +3,7 @@ import { auth, db } from "../firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 export default function Register() {
     const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ export default function Register() {
 
     async function handleRegister () {
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth,email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
             // save user's role to firestore
@@ -22,47 +23,70 @@ export default function Register() {
                 role: role
             });
 
-        navigate(role === "mentor" ? "/mentor-dashboard" : "/student-dashboard");
+            navigate(role === "mentor" ? "/mentor-dashboard" : "/student-dashboard");
         } catch (err) {
             setError(err.message);
         }
     }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        handleRegister();
+    }
     
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 " >
-            <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-green-800">Create Account</h2>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
-                <input
-                    className="w-full border p-2 rounded mb-4"
-                    type="email"
-                    placeholder="email"
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <input
-                    className="w-full border p-2 rounded mb-4"
-                    type="password"
-                    placeholder="password"
-                    onChange={e => setPassword(e.target.value)}
-                />
-                <select
-                    className="w-full border p-2 rounded mb-4"
-                    value={role}
-                    onChange={e => setRole(e.target.value)}
-                >
-                    <option value="student">Student</option>
-                    <option value="mentor">Mentor</option>
-                </select>
-                <button
-                    className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700 transition"
-                    onClick={handleRegister}
-                >
-                    Register
-                </button>
-                <p className="mt-4 text-sm text-gray-600">
-                    Already have an account? <a href="/login" className="text-green-600 hover:underline">Login</a>
+        <div className="register-page">
+            <div className="register-card">
+                <div className="register-header">
+                    <h2 className="register-title">Create Account</h2>
+                </div>
+
+                {error && <div className="register-error">{error}</div>}
+
+                <form onSubmit={handleSubmit}>
+                    <label className="register-field">
+                        <span className="register-label">Email</span>
+                        <input
+                            className="register-input"
+                            type="email"
+                            placeholder="you@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </label>
+
+                    <label className="register-field">
+                        <span className="register-label">Password</span>
+                        <input
+                            className="register-input"
+                            type="password"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </label>
+
+                    <label className="register-field">
+                        <span className="register-label">Role</span>
+                        <select
+                            className="register-select"
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                        >
+                            <option value="student">Student</option>
+                            <option value="mentor">Mentor</option>
+                        </select>
+                    </label>
+
+                    <button type="submit" className="register-submit">
+                        Register
+                    </button>
+                </form>
+
+                <p className="register-footer">
+                    Already have an account? <a href="/login">Login</a>
                 </p>
             </div>  
         </div>
-    )
+    );
 }
