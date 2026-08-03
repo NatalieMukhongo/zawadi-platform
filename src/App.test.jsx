@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import App from './App';
 
-jest.mock('./context/AuthContext', () => ({
+vi.mock('./context/AuthContext', () => ({
   AuthProvider: ({ children }) => <>{children}</>,
   useAuth: () => ({ userRole: null }),
 }));
