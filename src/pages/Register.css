@@ -1,20 +1,60 @@
 .register-page {
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 1rem;
-  background-color: #f8fafc;
+  background: linear-gradient(160deg, #ce9c5e 0%, #e7eaec 45%, #85c297 100%);
+}
+
+.register-page::before,
+.register-page::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.register-page::before {
+  width: 32rem;
+  height: 32rem;
+  top: -12rem;
+  right: -10rem;
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.16), transparent 70%);
+}
+
+.register-page::after {
+  width: 28rem;
+  height: 28rem;
+  bottom: -10rem;
+  left: -8rem;
+  background: radial-gradient(circle, rgba(21, 128, 61, 0.16), transparent 70%);
 }
 
 .register-card {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 34rem;
   background: #ffffff;
   padding: 2rem;
   border-radius: 2rem;
-  border: 1px solid #d1fae5;
+  border: 1px solid #dcfce7;
   box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.register-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #ea580c 0%, #f97316 25%, #22c55e 55%, #15803d 100%);
 }
 
 .register-header {
@@ -68,25 +108,29 @@
 .register-select:focus {
   outline: none;
   border-color: #16a34a;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
 }
 
 .register-submit {
   width: 100%;
   border: none;
   border-radius: 1rem;
-  background: #047857;
+  background: linear-gradient(135deg, #16a34a, #15803d);
   color: #ffffff;
   padding: 0.85rem 1rem;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(4, 120, 87, 0.2);
-  transition: background 0.2s ease;
+  box-shadow: 0 10px 20px rgba(21, 128, 61, 0.25);
+  transition: filter 0.2s ease, transform 0.2s ease;
 }
 
 .register-submit:hover:not(:disabled) {
-  background: #065f46;
+  filter: brightness(1.08);
+}
+
+.register-submit:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .register-submit:disabled {
@@ -102,7 +146,7 @@
 }
 
 .register-footer a {
-  color: #047857;
+  color: #15803d;
   font-weight: 700;
   text-decoration: none;
 }
