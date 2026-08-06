@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import StudentDashboard from "./pages/StudentDashboard";
 import MentorDashboard from "./pages/MentorDashboard";
+import SchoolDetail from "./pages/SchoolDetail";
+import ComingSoon from "./pages/ComingSoon";
 
 function App() {
   return (
@@ -27,6 +29,46 @@ function App() {
             element={
               <ProtectedRoute allowedRole="mentor">
                 <MentorDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/schools/:schoolId"
+            element={
+              <ProtectedRoute allowedRole="student">
+                <SchoolDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sat-prep"
+            element={
+              <ProtectedRoute allowedRole="student">
+                <ComingSoon title="SAT Prep" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sat-prep/continue"
+            element={
+              <ProtectedRoute allowedRole="student">
+                <ComingSoon title="Continue Prep" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sat-prep/quiz"
+            element={
+              <ProtectedRoute allowedRole="student">
+                <ComingSoon title="Pop Quiz" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sat-prep/mock-test"
+            element={
+              <ProtectedRoute allowedRole="student">
+                <ComingSoon title="Mock Test" />
               </ProtectedRoute>
             }
           />

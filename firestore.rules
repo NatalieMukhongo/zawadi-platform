@@ -3,11 +3,20 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null
+                  && (request.auth.uid == userId || resource.data.role == "mentor");
       allow create: if request.auth != null
                     && request.auth.uid == userId
                     && request.resource.data.role in ['student', 'mentor'];
-      allow update, delete: if false;
+      allow update: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['displayName', 'bio']);
+      allow delete: if false;
+
+      match /{subcollection}/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
     }
   }
 }
