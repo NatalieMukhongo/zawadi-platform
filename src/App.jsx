@@ -7,6 +7,14 @@ import StudentDashboard from "./pages/StudentDashboard";
 import MentorDashboard from "./pages/MentorDashboard";
 import SchoolDetail from "./pages/SchoolDetail";
 import ComingSoon from "./pages/ComingSoon";
+import EssayHubLayout from "./pages/EssayHubLayout";
+import EssayDashboardTab from "./pages/EssayDashboardTab";
+import EssaySupplementalTab from "./pages/EssaySupplementalTab";
+import EssayEditorPage from "./pages/EssayEditorPage";
+import EssayPersonalStatementTab from "./pages/EssayPersonalStatementTab";
+import EssayResourceLibrary from "./pages/EssayResourceLibrary";
+import EssayShowTellTab from "./pages/EssayShowTellTab";
+import { PERSONAL_STATEMENT_ID } from "./lib/essaysApi";
 
 function App() {
   return (
@@ -40,6 +48,21 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/essays"
+            element={
+              <ProtectedRoute allowedRole="student">
+                <EssayHubLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<EssayDashboardTab />} />
+            <Route path={PERSONAL_STATEMENT_ID} element={<EssayPersonalStatementTab />} />
+            <Route path="supplemental" element={<EssaySupplementalTab />} />
+            <Route path="resources" element={<EssayResourceLibrary />} />
+            <Route path="show-tell" element={<EssayShowTellTab />} />
+            <Route path=":essayId" element={<EssayEditorPage />} />
+          </Route>
           <Route
             path="/sat-prep"
             element={

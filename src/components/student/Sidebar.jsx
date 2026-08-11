@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
+
+const MENU_ITEMS = [{ label: "Essay Hub", to: "/essays" }];
 
 export default function Sidebar({ open, onClose, uid, profile, onProfileSaved }) {
   return (
@@ -20,6 +23,19 @@ export default function Sidebar({ open, onClose, uid, profile, onProfileSaved })
             Close
           </button>
         </div>
+
+        <nav className="border-b border-gray-200 p-5">
+          {MENU_ITEMS.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={onClose}
+              className="block rounded-lg px-3 py-2 text-sm font-semibold text-green-800 hover:bg-green-50"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
         <div className="p-5">
           <ProfileCard uid={uid} profile={profile} onSaved={onProfileSaved} />
